@@ -1,92 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta name="description" content="Demo of storage-form Web Component" />
-		<title>storage-form Web Component Demo</title>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Demo of storage-form Web Component" />
+    <title>storage-form Web Component Demo</title>
 
-		<style>
-			:root[data-theme="dark"] {
-				background: black;
-				color: white;
-			}
-			
-			:root[data-theme="light"] {
-				background: #f4f4f4;
-			}
-			
-			:root[data-contrast="true"] * {
-				font-weight: bold;
-			}
-			
-			output {
-				font-family: monospace;
-			}
-		</style>
+    <style>
+      :root {
+        color-scheme: light dark;
+      }
 
-		<script type="module" src="storage-form.js"></script>
-	</head>
-	<body>
-		<storage-form>
-			<form>
-				<label>
-					Example
-					<input type="text" name="example" value="value">
-				</label>
-				<button>Submit</button>
-			</form>
-		</storage-form>
+      :root:has([value="dark"]:checked) {
+        color-scheme: dark;
+      }
 
-		<hr>
+      :root:has([value="light"]:checked) {
+        color-scheme: light;
+      }
 
-		<storage-form>
-			<form>
-				<label>
-					<input type="radio" name="theme" value="dark">
-					<span>Dark mode</span>
-				</label>
-				<label>
-					<input type="radio" name="theme" value="light">
-					<span>Light mode</span>
-				</label>
-				<label>
-					<input type="radio" name="theme" value="" checked>
-					<span>Default mode</span>
-				</label>
-				<br>
-				<label>
-					<input type="hidden" name="contrast" value>
-					<input type="checkbox" name="contrast" value="true">
-					<span>High contrast</span>
-				</label>
-			</form>
-		</storage-form>
+      :root:has([name="contrast"]:checked) {
+        font-weight: bold;
+      }
 
-		<hr>
+      output {
+        font-family: monospace;
+      }
+    </style>
 
-		<output></output>
+    <script type="module" src="storage-form.js"></script>
+  </head>
+  <body>
+    <h2>General example</h2>
+    <storage-form>
+      <form>
+        <label>
+          Example
+          <input type="text" name="example" value="value" />
+        </label>
+        <button>Submit</button>
+      </form>
+    </storage-form>
 
-		<script>
-			const updatePage = () => {
-				
-				const options = ["theme", "contrast"];
-				for (let option of options) {
-					
-					// Update root attributes
-					document.documentElement.dataset[option] = window.localStorage[option] || "";
-					
-					// Update form state
-					document.querySelector(
-						`[name='${option}'][value='${window.localStorage[option] || ""}']`
-					).checked = true;
-				};
-				
-				// Update output to demonstrate
-				document.querySelector("output").innerHTML = JSON.stringify(window.localStorage);
-			};
-			window.addEventListener("storage", updatePage);
-			updatePage();
-		</script>
-	</body>
+    <hr />
+
+    <h2>
+      Example of submitting with
+      <code>change</code>
+      event (no submit button) and listening for
+      <code>storage</code>
+      event
+    </h2>
+    <p>Use case for light/dark mode.</p>
+    <storage-form>
+      <form>
+        <label>
+          <input type="radio" name="theme" value="dark" />
+          <span>Dark mode</span>
+        </label>
+        <label>
+          <input type="radio" name="theme" value="light" />
+          <span>Light mode</span>
+        </label>
+        <label>
+          <input type="radio" name="theme" value="" checked />
+          <span>Default mode</span>
+        </label>
+        <br />
+        <label>
+          <input type="hidden" name="contrast" value />
+          <input type="checkbox" name="contrast" value="true" />
+          <span>High contrast</span>
+        </label>
+      </form>
+    </storage-form>
+
+    <hr />
+
+    <h2>Data retrieved from local storage</h2>
+    <output></output>
+
+    <script>
+      const updatePage = () => {
+        const options = ["theme", "contrast"];
+        for (let option of options) {
+          // Ensure form stays in sync
+          document.querySelector(
+            `[name='${option}'][value='${window.localStorage[option] || ""}']`
+          ).checked = true;
+        }
+
+        // Update output to demonstrate
+        document.querySelector("output").innerHTML = JSON.stringify(
+          window.localStorage
+        );
+      };
+      window.addEventListener("storage", updatePage);
+      updatePage();
+    </script>
+  </body>
 </html>

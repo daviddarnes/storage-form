@@ -6,6 +6,8 @@ A Web Component that allows you to submit data to local storage.
 
 ## Examples
 
+General usage example:
+
 ```html
 <script type="module" src="storage-form.js"></script>
 
@@ -13,11 +15,54 @@ A Web Component that allows you to submit data to local storage.
   <form>
     <label>
       Example
-      <input type="text" name="example" value="value">
+      <input type="text" name="example" value="value" />
     </label>
     <button>Submit</button>
   </form>
 </storage-form>
+```
+
+Example of submitting with `change` event (no submit button) and listening for `storage` event. Use case for light/dark mode:
+
+```html
+<script type="module" src="storage-form.js"></script>
+
+<storage-form>
+  <form>
+    <label>
+      <input type="radio" name="theme" value="dark" />
+      <span>Dark mode</span>
+    </label>
+    <label>
+      <input type="radio" name="theme" value="light" />
+      <span>Light mode</span>
+    </label>
+    <label>
+      <input type="radio" name="theme" value="" checked />
+      <span>Default mode</span>
+    </label>
+    <br />
+    <label>
+      <input type="hidden" name="contrast" value />
+      <input type="checkbox" name="contrast" value="true" />
+      <span>High contrast</span>
+    </label>
+  </form>
+</storage-form>
+
+<script>
+  // Keeping form state in sync with local storage using storage event and on page load
+  const updatePage = () => {
+    const options = ["theme", "contrast"];
+    for (let option of options) {
+      document.querySelector(
+        `[name='${option}'][value='${window.localStorage[option] || ""}']`
+      ).checked = true;
+    }
+  };
+  window.addEventListener("storage", updatePage);
+  updatePage();
+</script>
 ```
 
 ## Features
@@ -47,12 +92,18 @@ Make sure you include the `<script>` in your project (choose one of these):
 
 ```html
 <!-- 3rd party CDN, not recommended for production use -->
-<script type="module" src="https://www.unpkg.com/@daviddarnes/storage-form@1.0.0/storage-form.js"></script>
+<script
+  type="module"
+  src="https://www.unpkg.com/@daviddarnes/storage-form@1.0.0/storage-form.js"
+></script>
 ```
 
 ```html
 <!-- 3rd party CDN, not recommended for production use -->
-<script type="module" src="https://esm.sh/@daviddarnes/storage-form@1.0.0"></script>
+<script
+  type="module"
+  src="https://esm.sh/@daviddarnes/storage-form@1.0.0"
+></script>
 ```
 
 ## Credit
