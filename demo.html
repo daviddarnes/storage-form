@@ -47,9 +47,7 @@
     <h2>
       Example of submitting with
       <code>change</code>
-      event (no submit button) and listening for
-      <code>storage</code>
-      event
+      event instead of a submit button
     </h2>
     <p>Use case for light/dark mode.</p>
     <storage-form>
@@ -77,20 +75,27 @@
 
     <hr />
 
-    <h2>Data retrieved from local storage</h2>
-    <output></output>
+    <h2>
+      Example of hooking into
+      <code>storage</code>
+      event
+    </h2>
 
+    <storage-form>
+      <form>
+        <label>
+          Update the
+          <code>output</code>
+          by checking the box
+          <input type="hidden" name="output" value />
+          <input type="checkbox" name="output" value="updated" />
+        </label>
+      </form>
+    </storage-form>
+
+    <output></output>
     <script>
       const updatePage = () => {
-        const options = ["theme", "contrast"];
-        for (let option of options) {
-          // Ensure form stays in sync
-          document.querySelector(
-            `[name='${option}'][value='${window.localStorage[option] || ""}']`
-          ).checked = true;
-        }
-
-        // Update output to demonstrate
         document.querySelector("output").innerHTML = JSON.stringify(
           window.localStorage
         );

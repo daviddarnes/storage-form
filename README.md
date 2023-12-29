@@ -22,7 +22,7 @@ General usage example:
 </storage-form>
 ```
 
-Example of submitting with `change` event (no submit button) and listening for `storage` event. Use case for light/dark mode:
+Example of submitting with `change` event instead of a submit button. Use case for light/dark mode:
 
 ```html
 <script type="module" src="storage-form.js"></script>
@@ -49,16 +49,31 @@ Example of submitting with `change` event (no submit button) and listening for `
     </label>
   </form>
 </storage-form>
+```
 
+Example of hooking into `storage` event:
+
+```html
+<script type="module" src="storage-form.js"></script>
+
+<storage-form>
+  <form>
+    <label>
+      Update the
+      <code>output</code>
+      by checking the box
+      <input type="hidden" name="output" value />
+      <input type="checkbox" name="output" value="updated" />
+    </label>
+  </form>
+</storage-form>
+
+<output></output>
 <script>
-  // Keeping form state in sync with local storage using storage event and on page load
   const updatePage = () => {
-    const options = ["theme", "contrast"];
-    for (let option of options) {
-      document.querySelector(
-        `[name='${option}'][value='${window.localStorage[option] || ""}']`
-      ).checked = true;
-    }
+    document.querySelector("output").innerHTML = JSON.stringify(
+      window.localStorage
+    );
   };
   window.addEventListener("storage", updatePage);
   updatePage();
@@ -69,9 +84,10 @@ Example of submitting with `change` event (no submit button) and listening for `
 
 This Web Component allows you to:
 
-- Use regular form elements to maniptulate data in local storage
+- Use regular form elements to manipulate data in local storage
 - Invoke a `storage` event on the page to hook into elsewhere on the page
-- Optionally submit the form on the forms `change` event by ommiting the forms submit button/input element
+- Maintain the forms state, using local storage, when the page is refreshed or reloaded
+- Optionally submit the form on the forms `change` event by omitting the forms submit button/input element
 
 ## Installation
 
@@ -94,7 +110,7 @@ Make sure you include the `<script>` in your project (choose one of these):
 <!-- 3rd party CDN, not recommended for production use -->
 <script
   type="module"
-  src="https://www.unpkg.com/@daviddarnes/storage-form@1.0.0/storage-form.js"
+  src="https://www.unpkg.com/@daviddarnes/storage-form@2.0.0/storage-form.js"
 ></script>
 ```
 
@@ -102,7 +118,7 @@ Make sure you include the `<script>` in your project (choose one of these):
 <!-- 3rd party CDN, not recommended for production use -->
 <script
   type="module"
-  src="https://esm.sh/@daviddarnes/storage-form@1.0.0"
+  src="https://esm.sh/@daviddarnes/storage-form@2.0.0"
 ></script>
 ```
 
@@ -111,3 +127,4 @@ Make sure you include the `<script>` in your project (choose one of these):
 With thanks to the following people:
 
 - [Zach Leatherman](https://zachleat.com) for inspiring this [Web Component repo template](https://github.com/daviddarnes/component-template)
+- [Nathan Knowler](https://knowler.dev) for proposing a solution to the `updateForm()` method

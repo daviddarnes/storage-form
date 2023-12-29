@@ -7,6 +7,7 @@ class StorageForm extends HTMLElement {
 
   connectedCallback() {
     this.forms.forEach((form) => {
+      this.updateForm(form);
       const eventType = this.getSubmitter(form) ? "submit" : "change";
       form.addEventListener(eventType, (event) => {
         event.preventDefault();
@@ -14,6 +15,23 @@ class StorageForm extends HTMLElement {
         window.dispatchEvent(new StorageEvent("storage"));
       });
     });
+  }
+
+  updateForm(form) {
+    for (const input of form.elements) {
+      const storedValue = window.localStorage[input.name];
+      if (!storedValue) return;
+      switch (input.type) {
+        case "hidden":
+          break;
+        case "checkbox":
+        case "radio":
+          input.checked = input.value == storedValue;
+          break;
+        default:
+          input.value = storedValue;
+      }
+    }
   }
 
   updateStorage(data) {
