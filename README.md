@@ -2,7 +2,7 @@
 
 A Web Component that allows you to submit data to local storage.
 
-**[Demo](https://daviddarnes.github.io/storage-form/demo.html)**
+**[Demo](https://daviddarnes.github.io/storage-form/demo.html)** | **[Further reading](https://darn.es/storage-form-web-component/)**
 
 ## Examples
 
